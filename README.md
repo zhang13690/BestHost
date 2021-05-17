@@ -2,33 +2,47 @@
 
 ## 项目说明
 
-BestHost项目的初衷是为本地访问指定网站提供最佳的IP地址，即提供网站域名和本地访问该网站最快的IP之间的映射关系。
-BestHost致力于提供更方便的、自动化的方式来完成这一过程在个人电脑上的设置。
+BestHost 项目的初衷是为本地访问指定网站提供最佳的 IP 地址，即提供网站域名和 IP 的映射关系，此 IP 应是本地访问该网站最快的 IP 地址。
+BestHost 还将考虑提升在 PC 上自动化设置 hosts 的体验。
 
-## 项目背景和基本设计思路
+## 项目背景和设计思路
 
-我时长发现访问 github, idea 等 (SW-1) 技术相关网站时，速度较慢。有网友提供如下小技巧：
+由于某些原因，人们时常发现访问特定网站时速度极慢甚至无法访问。例如在中国访问 Github, JetBrains 等网站时就很可能出现这种情况。
 
+有网友提供如下小技巧：
 https://blog.csdn.net/weixin_44141495/article/details/108033395
 
-基本思路大致如下：
-1. 利用众多 DNS 提供商的服务，获取指定网站域名的 IP 地址。
+其基本思路如下：
+1. 利用网络上众多的 DNS 服务商，向其请求指定网站域名的 IP 地址。这时可得到多个 IP 地址。
+2. 在本地计算机尝试访问这些 IP 地址，最终可找到本地访问该网站可用的并且是最快的一个 IP 地址（例如根据 ping 的耗时来排序）。
+3. 将该网站域名与最快的 IP 的映射关系添加到本地计算机的 hosts 文件中。这样后续即可实现用"最快的 IP "访问特定的网站。
+
+本项目的实现也是基于此思路。由于我熟悉 Java ，因此本项目使用 Java 编写，也希望能实现跨平台使用。
+这就是本项目的初步想法，若有缺陷，欢迎交流和指正。
+
+## 资源准备
+
+### 1. DNS 服务商资源
+
+
+
+
+
+
+提供商的服务，获取指定网站域名的 IP 地址。
 可参考网站：
 http://tool.chinaz.com/dns
 https://www.ipaddress.com/
-2. 本地访问获取的这些 IP 地址，找到本地访问最快的一个 IP 地址（如根据 ping 的时间来排序）
-3. 将最快的这个 IP 地址与域名映射关系加入到本地计算机的 hosts 文件列表中。
 
 该思路和我使用的一个软件 [UsbEAm Hosts Editor](https://www.dogfight360.com/blog/475/) 应该有相同之处，可惜不知它具体的实现方式。
 
-项目设计也基于此基本思路。由于我熟悉Java，因此本项目使用Java编写。
 
 一个重要的步骤是如何收集全球范围的 DNS 提供商，于是通过 bing 搜索 "全球DNS列表"，简单点击了两个网页，例如：
 https://www.iplaysoft.com/public-dns.html
 https://ip.cn/dns.html
 中都可利用。后续可继续查找。
 
-这是项目的初步想法，欢迎交流。
+
 
 ## 技术点
 
@@ -79,4 +93,38 @@ public class IPByDNS {
 
 ## 最近目标
 
-// TODO
+1. 基本的功能实现
+2. 收集 dns 服务器列表并验证。
+3. JUnit单元测试验证上述2步骤
+4. 如何使用管理员权限编辑 Windows 的 hosts 权限？结合编写 C 语言的程序？
+
+// 后续需要考虑的工作
+5. 爬取一个网站所要访问的所有域名，否则只解析指定域名的话，还是不太友好的，这个是一个大的功能
+6. 是否需要对 dns 获取到的 ip 地址进行缓存，例如借助 sqlite3 缓存到本地。
+7. 像 UsbEAm Hosts Editor 那样管理一类域名的资源，但是额外提供批量操作。
+
+
+
+
+
+
+
+
+# 关于收集的 hosts 相关信息
+https://ip.cn/dns.html
+https://github.com/janmasarik/resolvers/blob/master/resolvers.txt
+https://github.com/oneoffdallas/dohservers/blob/master/iplist.txt
+https://cn.bing.com/search?q=dns大全&PC=U316&FORM=CHROMN
+http://114.xixik.com/chinadns/#anchor4
+https://dnsdaquan.com/
+
+
+
+
+
+
+
+
+
+
+
